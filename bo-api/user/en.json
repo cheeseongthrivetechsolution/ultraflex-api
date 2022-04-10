@@ -1,0 +1,21 @@
+{
+  //login
+  "m20000" : "Action Success!",
+  "m50001" : "Please fill in all fields!",
+  "m50002" : "Your account was deactivated. Please contact admin!",
+  "m50003" : "Your account was blocked. Please contact admin!",
+  "m50004" : "Your account was deleted. Please contact admin!",
+  "m50005" : "Unknown error. Please contact admin!",
+  "m50006" : "User not exist!",
+  "m50007" : "Unknown error on fail login attempt. Please contact admin!",
+  "m50008" : "Wrong password entered!",
+  "m50009" : "Unknown error on token creation. Please contact admin!",
+  "m50010" : "Captcha failed!",
+  //logout
+  "m50011" : "Missing token!",
+  "m50012" : "Invalid Token!",
+  "m50013" : "Token not exists!",
+  "m50014" : "Logout failed!",
+  //Sound switch
+  "m50015" : "Failed to switch sound!"
+}

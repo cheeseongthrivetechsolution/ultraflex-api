@@ -1,32 +1,41 @@
-<?php 
-  // Headers
-  include_once '../../config/postHeader.php';
+<?php
+  //Import configs
+  include_once '../../config/main_bo-api.php';
   include_once '../../config/Database.php';
-  include_once '../../config/redis.php';
+  //Import models
   include_once '../../models/User.php';
-  
+  //header
+	header('Access-Control-Allow-Methods: POST');
+
   // Instantiate DB & connect
   $database = new Database();
   $db = $database->connect();
 
   // Instantiate blog post object
   $user = new User($db);
-  
+
   //prepare respond array
   $respond_array = array( 'code' => 500,
                           'msg' => '',
-                          'msgCode' => 0,
                           'token' => '');
+  //Get request
+  $username = isset($_POST["username"]) ? $_POST["username"] : "";
+  $password = isset($_POST["password"]) ? $_POST["password"] : "";
+  $recaptcha = isset($_POST["recaptcha"]) ? $_POST["recaptcha"] : "";
+  $lang = isset($_POST["lang"]) ? strtolower($_POST['lang']) : "";
 
-  // Get raw posted data
-  $data = json_decode(file_get_contents("php://input"));
-  if ($data->recaptcha == null || $data->username == null  || $data->password == null  ) {
-    $respond_array['msg'] = "Please fill in all fields";
-    $respond_array['msgCode'] = 50001;  
+  if ($lang == "") {
+    $lang = 'en';
+  }
+  //Translate return message
+  $message = file_get_contents($lang.".json");
+  $message = preg_replace( '![ \t]*//.*[ \t]*[\r\n]!', '', $message );
+  $message = json_decode( $message, true );
+  if ($password== "" || $username== ""  || $recaptcha == "") {
+    $respond_array['msg'] = $message['m50001'];
     echo json_encode($respond_array);
     die();
   }
-
   //verify recaptcha
   $curlx = curl_init();
 
@@ -35,69 +44,59 @@
 	curl_setopt($curlx, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($curlx, CURLOPT_POST, 1);
 	$verify_data =  [ 'secret' => '6LdCK1cfAAAAAMpSvzND9MI6w6HBEx1DtXHVoOal', //<--- your reCaptcha secret key
-		              'response' => $data->recaptcha];
+		                'response' => $recaptcha];
 	curl_setopt($curlx, CURLOPT_POSTFIELDS, $verify_data);
 	$resp = json_decode(curl_exec($curlx));
 	curl_close($curlx);
 	if ($resp->success) {
-    $user->username = $data->username;
+    $user->username = $username;
 
     //Get User Data
-    $user->getUserByUsername();
+    $user->getLoginCredentials();
     //Verify User Login Credential
     if ($user->user_id != null) {
       //Check User Status
       if ($user->status == 1) {
         //Verify Password
-        $hashed_password = hash_hmac('sha256', $data->password, $user->salt);
+        $hashed_password = hash_hmac('sha256', $password, $user->salt);
         if ($user->password == $hashed_password) {
-          if ($user->createToken()) {
+          if ($user->login()) {
             $respond_array['code'] = 200;
-            $respond_array['msg'] = "Action success!";
-            $respond_array['msgCode'] = 20000;
+            $respond_array['msg'] = $message['m20000'];
             $respond_array['token'] = $user->access_token;
+            //Set token to redis
+            $redis->set('ultraflex_'.$user->username, $user->access_token, 6000);
           } else {
-            $respond_array['msg'] = "Unknown error on token creation. Please contact admin!";
-            $respond_array['msgCode'] = 50009; 
+            $respond_array['msg'] = $message['m50009'];
           }
         } else {
           if ($user->failAttempt()) {
-            $respond_array['msg'] = "Wrong password entered!";
-            $respond_array['msgCode'] = 50008;
+            $respond_array['msg'] = $message['m50008'];
             if ($user->fail_login > 2) {
               if ($user->updateStatus(3)) {
-                $respond_array['msg'] = "Your account was blocked. Please contact admin!";  
-                $respond_array['msgCode'] = 50003; 
+                $respond_array['msg'] = $message['m50003'];
               } else {
-                $respond_array['msg'] = "Unknown error on fail login attempt. Please contact admin!";
-                $respond_array['msgCode'] = 50007; 
+                $respond_array['msg'] = $message['m50007'];
               }
             }
           } else {
-            $respond_array['msg'] = "Unknown error on fail login attempt. Please contact admin!";
-            $respond_array['msgCode'] = 50007; 
+            $respond_array['msg'] = $message['m50007'];
           }
         }
       } else if ($user->status == 2) {
-        $respond_array['msg'] = "Your account was deactivated. Please contact admin!";
-        $respond_array['msgCode'] = 50002;  
+        $respond_array['msg'] = $message['m50002'];
       } else if ($user->status == 3) {
-        $respond_array['msg'] = "Your account was blocked. Please contact admin!";  
-        $respond_array['msgCode'] = 50003;  
+        $respond_array['msg'] = $message['m50003'];
       } else if ($user->status == 0) {
-        $respond_array['msg'] = "Your account was deleted. Please contact admin!"; 
-        $respond_array['msgCode'] = 50004;  
+        $respond_array['msg'] = $message['m50004'];
       } else {
-        $respond_array['msg'] = "Unknown error. Please contact admin!";
-        $respond_array['msgCode'] = 50005;  
+        $respond_array['msg'] = $message['m50005'];
       }
     } else {
-      $respond_array['msg'] = "User not exist!";
-      $respond_array['msgCode'] = 50006;  
+      $respond_array['msg'] = $message['m50006'];
     }
   } else {
-    $respond_array['msg'] = "Captcha Failed!";
-    $respond_array['msgCode'] = 58000;  
+    $respond_array['msg'] = $message['m50010'];
   }
-  
+
   echo json_encode($respond_array);

@@ -1,4 +1,4 @@
-<?php 
+<?php
   class User {
     // DB stuff
     private $conn;
@@ -10,6 +10,7 @@
     public $username;
     public $password;
     public $salt;
+    public $name;
     public $email;
     public $dob;
     public $gender;
@@ -33,9 +34,9 @@
     }
 
     //Login
-    public function getUserByUsername() {
+    public function getLoginCredentials() {
         // Create query
-        $query = '  SELECT * 
+        $query = '  SELECT *
                     FROM ' . $this->table . '
                     WHERE
                         username = :username ';
@@ -54,30 +55,43 @@
         // Set properties
         if ($row) {
             $this->user_id = $row['user_id'];
-            $this->department_id = $row['department_id'];
             $this->username = $row['username'];
             $this->password = $row['password'];
             $this->salt = $row['salt'];
-            $this->email = $row['email'];
-            $this->dob = $row['dob'];
-            $this->gender = $row['gender'];
-            $this->avatar = $row['avatar'];
-            $this->sound = $row['sound'];
-            $this->phone = $row['phone'];
-            $this->remark = $row['remark'];
             $this->status = $row['status'];
             $this->last_login = $row['last_login'];
             $this->login_ip = $row['login_ip'];
             $this->fail_login = $row['fail_login'];
-            $this->created_at = $row['created_at'];
-            $this->create_by = $row['create_by'];
-            $this->updated_at = $row['updated_at'];
-            $this->update_by = $row['update_by'];
             $this->access_token = $row['access_token'];
         }
-        
+
     }
-    
+
+    public function getUserInfo() {
+        // Create query
+        $query = '  SELECT *
+                    FROM ' . $this->table . '
+                    WHERE
+                        username = :username ';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind ID
+        $stmt->bindParam(':username', $this->username);
+
+        // Execute query
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Set properties
+        if ($row) {
+          return $row;
+        }
+
+    }
+
     //Failed Login Attempt
     public function failAttempt() {
         // Create query
@@ -92,6 +106,27 @@
 
         // Bind data
         $stmt->bindParam(':fail_login', $this->fail_login);
+        $stmt->bindParam(':user_id', $this->user_id);
+
+        // Execute query
+        if($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    //Failed Login Attempt
+    public function soundSwitch() {
+        // Create query
+        $query = 'UPDATE ' . $this->table . '
+                    SET sound = :sound
+                    WHERE user_id = :user_id';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+        // Bind data
+        $stmt->bindParam(':sound', $this->sound);
         $stmt->bindParam(':user_id', $this->user_id);
 
         // Execute query
@@ -123,10 +158,10 @@
         return false;
     }
 
-    public function createToken() {
+    public function login() {
         // Create query
         $query = 'UPDATE ' . $this->table . '
-                    SET access_token = :access_token
+                    SET access_token = :access_token, fail_login = :fail_login, last_login = :last_login, login_ip = :login_ip
                     WHERE user_id = :user_id';
 
         // Prepare statement
@@ -136,9 +171,15 @@
         $access_token = hash_hmac('sha256', $this->username . $this->password, $this->randomKey());
         $this->access_token = $access_token;
 
+        $this->fail_login = 0;
+        date_default_timezone_set('Asia/Singapore');
+        $now = date("Y-m-d H:i:s");
         // Bind data
         $stmt->bindParam(':access_token', $access_token);
+        $stmt->bindParam(':fail_login', $this->fail_login);
         $stmt->bindParam(':user_id', $this->user_id);
+        $stmt->bindParam(':last_login', $now);
+        $stmt->bindParam(':login_ip', $_SERVER['REMOTE_ADDR']);
 
         // Execute query
         if($stmt->execute()) {
@@ -147,6 +188,47 @@
 
         return false;
     }
+
+    public function getToken() {
+        // Create query
+        $query = '  SELECT username, access_token
+                    FROM ' . $this->table . '
+                    WHERE
+                        access_token = :token ';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind ID
+        $stmt->bindParam(':token', $this->access_token);
+
+        // Execute query
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Set properties
+        if ($row) {
+            $this->username = $row['username'];
+            $this->access_token = $row['access_token'];
+        }
+    }
+
+    public function logout() {
+        // Create query
+        $query = 'UPDATE ' . $this->table . '
+                    SET access_token = ""';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
 
     public function randomKey() {
 		$salt = "";
@@ -161,5 +243,5 @@
 		return $salt;
 	}
 
-    
+
   }
