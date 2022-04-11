@@ -1,21 +1,21 @@
 {
-  //login
   "m20000" : "Action Success!",
-  "m50001" : "Please fill in all fields!",
-  "m50002" : "Your account was deactivated. Please contact admin!",
-  "m50003" : "Your account was blocked. Please contact admin!",
-  "m50004" : "Your account was deleted. Please contact admin!",
-  "m50005" : "Unknown error. Please contact admin!",
-  "m50006" : "User not exist!",
-  "m50007" : "Unknown error on fail login attempt. Please contact admin!",
-  "m50008" : "Wrong password entered!",
-  "m50009" : "Unknown error on token creation. Please contact admin!",
-  "m50010" : "Captcha failed!",
-  //logout
-  "m50011" : "Missing token!",
-  "m50012" : "Invalid Token!",
-  "m50013" : "Token not exists!",
-  "m50014" : "Logout failed!",
-  //Sound switch
-  "m50015" : "Failed to switch sound!"
+  "m50001" : "Please key in username!",
+  "m50002" : "Please key in password!",
+  "m50003" : "ReCaptcha is empty, please contact admin!",
+  "m50004" : "ReCaptcha failed, please contact admin!",
+  "m50005" : "User not exist!",
+  "m50006" : "Your account was deleted, please contact admin!",
+  "m50007" : "Your account was deactivated, please contact admin!",
+  "m50008" : "Your account was blocked, please contact admin!",
+  "m50009" : "Wrong password entered!",
+  "m50010" : "Unknown error on status update, please contact admin!",
+  "m50011" : "Unknown error on fail login attempt, please contact admin!",
+  "m50012" : "Login failed, please contact admin!",
+  "m50013" : "Token's empty!",
+  "m50014" : "Invalid Token!",
+  "m50015" : "Token expired! Please login again.",
+  "m50016" : "Logout failed!",
+  "m50017" : "Failed to switch sound!",
+  "m50018" : "Logout failed, please contact admin!"
 }
