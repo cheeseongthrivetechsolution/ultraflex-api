@@ -4,6 +4,7 @@
   include_once '../../config/Database.php';
   //Import models
   include_once '../../models/User.php';
+  include_once '../../models/Department.php';
   //header
   header('Access-Control-Allow-Methods: POST');
   // Instantiate DB & connect

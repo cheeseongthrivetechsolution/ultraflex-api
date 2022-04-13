@@ -19,7 +19,7 @@
   $token = isset($put_vars["token"]) ? $put_vars["token"] : "";
   $lang = isset($put_vars["lang"]) ? strtolower($put_vars['lang']) : "en";
   //Translate return message
-  $message = file_get_contents($lang.".json");
+  $message = file_get_contents("../../translate/".$lang.".json");
   $message = preg_replace( '![ \t]*//.*[ \t]*[\r\n]!', '', $message );
   $message = json_decode( $message, true );
   //Input Validation

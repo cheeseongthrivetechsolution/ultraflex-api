@@ -4,7 +4,7 @@
 
 	//Database
 	putenv("host=localhost");
-	putenv("db_name=ultraflexV2");
+	putenv("db_name=ultraflexV2live");
 	putenv("username=ultraflex");
 	putenv("password=ultraflexultraflex");
 	//Cors
@@ -17,7 +17,7 @@
 		putenv("username=root");
 		putenv("password=");
 		//Cors
-		putenv("access_origin=*");
+		putenv("access_origin=http://localhost:9080");
 	} else if ($environment == 'STAGING') {
 		//Database
 		putenv("host=localhost");
@@ -36,7 +36,7 @@
 		$redis = new \Redis();
 		$redis->connect('127.0.0.1', 6379);
 	} catch (Exception $ex) {
-		$respond_array = array( 'code' => 401,
+		$respond_array = array( 'code' => 401,//200 500
 	                          'msg' => "Redis server down! Please contact admin.");
 		echo json_encode($respond_array);
 		die();

@@ -5,7 +5,7 @@
   //Import models
   include_once '../../models/User.php';
   //header
-	header('Access-Control-Allow-Methods: PUT');
+	header('Access-Control-Allow-Methods: GET');
   // Instantiate DB & connect
   $database = new Database();
   $db = $database->connect();
@@ -15,10 +15,11 @@
   $respond_array = array( 'code' => 500,
                           'msg' => '');
   //Get request
-  $token = isset($_REQUEST["token"]) ? $_REQUEST["token"] : "";
-  $lang = isset($_REQUEST["lang"]) ? strtolower($_REQUEST['lang']) : "en";
+  parse_str(file_get_contents("php://input"),$put_vars);
+  $token = isset($put_vars["token"]) ? $put_vars["token"] : "";
+  $lang = isset($put_vars["lang"]) ? strtolower($put_vars['lang']) : "en";
   //Translate return message
-  $message = file_get_contents($lang.".json");
+  $message = file_get_contents("../../translate/".$lang.".json");
   $message = preg_replace( '![ \t]*//.*[ \t]*[\r\n]!', '', $message );
   $message = json_decode( $message, true );
   //Input Validation
