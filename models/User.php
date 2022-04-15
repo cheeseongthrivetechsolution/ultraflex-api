@@ -51,7 +51,7 @@
           $this->user_id = $row['user_id'];
           $this->department_id = $row['department_id'];
           $this->position_id = $row['position_id'];
-          $this->position_id = $row['role_id'];
+          $this->role_id = $row['role_id'];
           $this->username = $row['username'];
           $this->password = $row['password'];
           $this->salt = $row['salt'];
@@ -92,7 +92,7 @@
           $this->user_id = $row['user_id'];
           $this->department_id = $row['department_id'];
           $this->position_id = $row['position_id'];
-          $this->position_id = $row['role_id'];
+          $this->role_id = $row['role_id'];
           $this->username = $row['username'];
           $this->password = $row['password'];
           $this->salt = $row['salt'];
@@ -192,6 +192,59 @@
         $stmt = $this->conn->prepare($query);
         // Bind data
         $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':user_id', $this->user_id);
+        // Execute query
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Update basic info
+    public function updateBasic() {
+        // Create query
+        $query = 'UPDATE ' . $this->table . '
+                    SET name = :name, email = :email, phone = :phone, dob = :dob, gender = :gender, update_by = :update_by, updated_at = :updated_at
+                    WHERE user_id = :user_id';
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        date_default_timezone_set('Asia/Singapore');
+        $now = date("Y-m-d H:i:s");
+        // Bind data
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':phone', $this->phone);
+        $stmt->bindParam(':dob', $this->dob);
+        $stmt->bindParam(':gender', $this->gender);
+        $stmt->bindParam(':update_by', $this->user_id);
+        $stmt->bindParam(':updated_at', $now);
+        $stmt->bindParam(':user_id', $this->user_id);
+        // Execute query
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Update basic info
+    public function updatePassword() {
+        // Create query
+        $query = 'UPDATE ' . $this->table . '
+                    SET password = :password, salt = :salt, update_by = :update_by, updated_at = :updated_at
+                    WHERE user_id = :user_id';
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        date_default_timezone_set('Asia/Singapore');
+        $now = date("Y-m-d H:i:s");
+        $salt = $this->generateSalt();
+        $this->password = $this->encryptPassword($this->password, $salt);
+        // Bind data
+        $stmt->bindParam(':password', $this->password);
+        $stmt->bindParam(':salt', $salt);
+        $stmt->bindParam(':update_by', $this->user_id);
+        $stmt->bindParam(':updated_at', $now);
         $stmt->bindParam(':user_id', $this->user_id);
         // Execute query
         if($stmt->execute()) {

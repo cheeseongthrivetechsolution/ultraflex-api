@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2022 at 11:52 AM
+-- Generation Time: Apr 15, 2022 at 11:48 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.28
 
@@ -136,7 +136,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `department_id`, `position_id`, `password`, `role_id`, `salt`, `name`, `email`, `dob`, `gender`, `avatar`, `sound`, `phone`, `remark`, `status`, `last_login`, `login_ip`, `fail_login`, `created_at`, `create_by`, `updated_at`, `update_by`, `access_token`) VALUES
-(1, 'cheeseong', 1, 1, 'a434df8389d477852e159ab794d9b637cfdbc19aefe896c887956b1214dcd1e9', 1, 'zhCK7nORKh8Ou0uOI7K69pz28hbMjI33', 'Chee Seong', 'cheeseong.thrivetechsolution@gmail.com', '1992-05-30', 1, 'http://storage.googleapis.com/fg_merchant_image/PG/PG_diaochan_1622613681.png', 0, '016-9349794', NULL, 1, '2022-04-13 16:33:44', '127.0.0.1', 0, '2022-04-08 11:53:15', NULL, '2022-04-08 11:53:15', NULL, 'e73c3af895815a6d84ec2e4bcd97465fa4e5cb75cf6fedfae887c7bc0bac117a');
+(1, 'cheeseong', 1, 1, '1edb2e61d728d1fe85bc07c652522d6a129ff1d813031904917beee794dcf662', 1, 'd3Kd4MRz6fOVK9TCV58O3KC6l2GIMp26', 'chee seong', 'cheeseong.thrivetechsolution@gmail.com', '1992-05-30', 2, 'http://storage.googleapis.com/fg_merchant_image/PG/PG_diaochan_1622613681.png', 0, '016-9349794', NULL, 1, '2022-04-15 17:28:00', '127.0.0.1', 0, '2022-04-08 11:53:15', NULL, '2022-04-15 17:31:55', 1, 'd568a9ee7655d29bd85349dc8a86ee4c0626c4652276d99ae267333358d4e8bf');
 
 --
 -- Indexes for dumped tables

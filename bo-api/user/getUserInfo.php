@@ -6,6 +6,7 @@
   include_once '../../models/User.php';
   include_once '../../models/Department.php';
   include_once '../../models/Position.php';
+  include_once '../../models/Role.php';
   //header
 	header('Access-Control-Allow-Methods: GET');
   // Instantiate DB & connect
@@ -15,6 +16,7 @@
   $user = new User($db);
   $department = new Department($db);
   $position = new Position($db);
+  $role = new Role($db);
   //prepare respond array
   $respond_array = array( 'code' => 500,
                           'row' => array(),
@@ -59,12 +61,18 @@
     $redis->expire("ultraflex_".$user->username, 600);
     //prepare data return
     $data =  array(
+      'username' => $user->username,
       'name' => $user->name,
       'department' => $department->getDepartmentName($user->department_id),
       'position' => $position->getPositionName($user->position_id),
-      'sound' => $user->sound,
+      'role' => $role->getRoleName($user->role_id),
+      'email' => $user->email,
+      'dob' => $user->dob,
+      'gender' => $user->gender,
       'avatar' => $user->avatar,
-      'sound' => $user->sound,
+      'phone' => $user->phone,
+      'last_login' => $user->last_login,
+      'login_ip' => $user->login_ip,
     );
     $respond_array['code'] = 200;
     $respond_array['row'] = $data;

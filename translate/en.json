@@ -1,5 +1,8 @@
 {
   "m20000" : "Action Success!",
+  "m20001" : "User not active!",
+  "m20002" : "Success update basic info!",
+  "m20003" : "Success update password!",
   "m50001" : "Please key in username!",
   "m50002" : "Please key in password!",
   "m50003" : "ReCaptcha is empty, please contact admin!",
@@ -17,5 +20,14 @@
   "m50015" : "Token expired! Please login again.",
   "m50016" : "Logout failed!",
   "m50017" : "Failed to switch sound!",
-  "m50018" : "Logout failed, please contact admin!"
+  "m50018" : "Logout failed, please contact admin!",
+  "m50019" : "Please enter name!",
+  "m50020" : "Please enter correct email format!",
+  "m50021" : "Please enter current password!",
+  "m50022" : "Please enter new password!",
+  "m50023" : "New password format incorret!",
+  "m50024" : "Please enter confirm new password!",
+  "m50025" : "New password not same!",
+  "m50026" : "Incorrect current password!"
+
 }

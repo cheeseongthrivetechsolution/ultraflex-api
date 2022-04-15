@@ -19,5 +19,22 @@
       $this->conn = $db;
     }
 
-    //Get user info by username
+    //Get Position Name
+    public function getDepartmentName($id) {
+      // Create query
+      $query = '  SELECT name FROM ' . $this->table . '
+                  WHERE department_id = :department_id AND status = 1;';
+      // Prepare statement
+      $stmt = $this->conn->prepare($query);
+      // Bind ID
+      $stmt->bindParam(':department_id', $id);
+      // Execute query
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      // Set properties
+      if ($row) {
+        return $row['name'];
+      }
+      return null;
+    }
   }
