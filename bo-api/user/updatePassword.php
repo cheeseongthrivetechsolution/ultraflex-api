@@ -87,7 +87,7 @@
     $respond_array['msg'] = $message['m50015'];
   } else {
     //reset token expiry to keep user alive
-    $redis->expire("ultraflex_".$user->username, 600);
+    $redis->expire("ultraflex_".$user->username, 1800);
     //update properties
     $user->password = $new;
     if ($user->updatePassword()) {

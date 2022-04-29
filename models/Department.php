@@ -9,17 +9,29 @@
     public $sequence;
     public $remark;
     public $status;
-    public $create_by;
+    public $created_at;
+    public $created_by;
     public $updated_at;
-    public $update_by;
-    public $access_token;
+    public $updated_by;
 
     // Constructor with DB
     public function __construct($db) {
       $this->conn = $db;
     }
 
-    //Get Position Name
+    //Get Department List
+    public function getDepartmentList() {
+      // Create query
+      $query = '  SELECT * FROM ' . $this->table . '
+                  WHERE status = 1;';
+      // Prepare statement
+      $stmt = $this->conn->prepare($query);
+      // Execute query
+      $stmt->execute();
+      return $stmt;
+    }
+
+    //Get Department Name
     public function getDepartmentName($id) {
       // Create query
       $query = '  SELECT name FROM ' . $this->table . '

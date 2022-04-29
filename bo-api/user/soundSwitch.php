@@ -52,7 +52,7 @@
     $respond_array['msg'] = $message['m50015'];
   } else {
     //reset token expiry to keep user alive
-    $redis->expire("ultraflex_".$user->username, 600);
+    $redis->expire("ultraflex_".$user->username, 1800);
     //turn on/off sound
     $user->sound = $user->sound == 1 ? 0 : 1;
     if ($user->soundSwitch()) {

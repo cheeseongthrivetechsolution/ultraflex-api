@@ -56,7 +56,7 @@
     $respond_array['msg'] = $message['m50015'];
   } else {
     //reset token expiry to keep user alive for 10 minutes
-    $redis->expire("ultraflex_".$user->username, 600);
+    $redis->expire("ultraflex_".$user->username, 1800);
     //prepare data return
     $data =  array(
       'name' => $user->name,

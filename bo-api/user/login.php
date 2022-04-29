@@ -91,7 +91,7 @@
         $respond_array['msg'] = $message['m20000'];
         $respond_array['token'] = $user->access_token;
         //Set token to redis
-        $redis->set('ultraflex_'.$user->username, $user->access_token, 600);
+        $redis->set('ultraflex_'.$user->username, $user->access_token, 1800);
       } else {
         $respond_array['msg'] = $message['m50012'];
       }

@@ -9,10 +9,10 @@
     public $sequence;
     public $remark;
     public $status;
-    public $create_by;
+    public $created_at;
+    public $created_by;
     public $updated_at;
     public $update_by;
-    public $access_token;
 
     // Constructor with DB
     public function __construct($db) {

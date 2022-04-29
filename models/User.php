@@ -24,9 +24,9 @@
     public $login_ip;
     public $fail_login;
     public $created_at;
-    public $create_by;
+    public $created_by;
     public $updated_at;
-    public $update_by;
+    public $updated_by;
     public $access_token;
 
     // Constructor with DB
@@ -68,9 +68,9 @@
           $this->login_ip = $row['login_ip'];
           $this->fail_login = $row['fail_login'];
           $this->created_at = $row['created_at'];
-          $this->create_by = $row['create_by'];
+          $this->created_by = $row['created_by'];
           $this->updated_at = $row['updated_at'];
-          $this->update_by = $row['update_by'];
+          $this->updated_by = $row['updated_by'];
           $this->access_token = $row['access_token'];
         }
     }
@@ -109,9 +109,9 @@
           $this->login_ip = $row['login_ip'];
           $this->fail_login = $row['fail_login'];
           $this->created_at = $row['created_at'];
-          $this->create_by = $row['create_by'];
+          $this->created_by = $row['created_by'];
           $this->updated_at = $row['updated_at'];
-          $this->update_by = $row['update_by'];
+          $this->updated_by = $row['updated_by'];
           $this->access_token = $row['access_token'];
         }
     }
@@ -204,7 +204,7 @@
     public function updateBasic() {
         // Create query
         $query = 'UPDATE ' . $this->table . '
-                    SET name = :name, email = :email, phone = :phone, dob = :dob, gender = :gender, update_by = :update_by, updated_at = :updated_at
+                    SET name = :name, email = :email, phone = :phone, dob = :dob, gender = :gender, updated_by = :updated_by, updated_at = :updated_at
                     WHERE user_id = :user_id';
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -217,7 +217,7 @@
         $stmt->bindParam(':phone', $this->phone);
         $stmt->bindParam(':dob', $this->dob);
         $stmt->bindParam(':gender', $this->gender);
-        $stmt->bindParam(':update_by', $this->user_id);
+        $stmt->bindParam(':updated_by', $this->user_id);
         $stmt->bindParam(':updated_at', $now);
         $stmt->bindParam(':user_id', $this->user_id);
         // Execute query
@@ -231,7 +231,7 @@
     public function updatePassword() {
         // Create query
         $query = 'UPDATE ' . $this->table . '
-                    SET password = :password, salt = :salt, update_by = :update_by, updated_at = :updated_at
+                    SET password = :password, salt = :salt, updated_by = :updated_by, updated_at = :updated_at
                     WHERE user_id = :user_id';
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -243,7 +243,7 @@
         // Bind data
         $stmt->bindParam(':password', $this->password);
         $stmt->bindParam(':salt', $salt);
-        $stmt->bindParam(':update_by', $this->user_id);
+        $stmt->bindParam(':updated_by', $this->user_id);
         $stmt->bindParam(':updated_at', $now);
         $stmt->bindParam(':user_id', $this->user_id);
         // Execute query

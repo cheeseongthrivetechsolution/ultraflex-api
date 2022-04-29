@@ -5,8 +5,6 @@
   //Import models
   include_once '../../models/User.php';
   include_once '../../models/Department.php';
-  include_once '../../models/Position.php';
-  include_once '../../models/Role.php';
   //header
 	header('Access-Control-Allow-Methods: GET');
   // Instantiate DB & connect
@@ -15,8 +13,6 @@
   // Instantiate blog post object
   $user = new User($db);
   $department = new Department($db);
-  $position = new Position($db);
-  $role = new Role($db);
   //prepare respond array
   $respond_array = array( 'code' => 500,
                           'row' => array(),
@@ -60,22 +56,30 @@
     //reset token expiry to keep user alive for 10 minutes
     $redis->expire("ultraflex_".$user->username, 1800);
     //prepare data return
-    $data =  array(
-      'username' => $user->username,
-      'name' => $user->name,
-      'department' => $department->getDepartmentName($user->department_id),
-      'position' => $position->getPositionName($user->position_id),
-      'role' => $role->getRoleName($user->role_id),
-      'email' => $user->email,
-      'dob' => $user->dob,
-      'gender' => $user->gender,
-      'avatar' => $user->avatar,
-      'phone' => $user->phone,
-      'last_login' => $user->last_login,
-      'login_ip' => $user->login_ip,
-    );
+    $result = $department->getDepartmentList();
+    $num = $result->rowCount();
+
+    if ($num > 0) {
+      while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        extract($row);
+        $post_item = array(
+          'department_id' => $department_id,
+          'name' => $name,
+          'sequence' => $sequence,
+          'remark' => $remark,
+          'status' => $status,
+          'created_at' => $created_at,
+          'created_by' => $created_by,
+          'updated_at' => $updated_at,
+          'updated_by' => $updated_by
+        );
+        array_push($respond_array['row'], $post_item);
+      }
+    }
+
+
+    $data = $department->getDepartmentList();
     $respond_array['code'] = 200;
-    $respond_array['row'] = $data;
     $respond_array['msg'] = $message['m20000'];
   }
   echo json_encode($respond_array);
