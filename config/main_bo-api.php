@@ -17,7 +17,7 @@
 		putenv("username=root");
 		putenv("password=");
 		//Cors
-		putenv("access_origin=http://localhost:9080");
+		putenv("access_origin=*");
 	} else if ($environment == 'STAGING') {
 		//Database
 		putenv("host=localhost");

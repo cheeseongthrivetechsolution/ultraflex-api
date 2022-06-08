@@ -61,10 +61,7 @@
     $data =  array(
       'name' => $user->name,
       'department' => $department->getDepartmentName($user->department_id),
-      'position' => $position->getPositionName($user->position_id),
-      'sound' => $user->sound,
       'avatar' => $user->avatar,
-      'sound' => $user->sound,
     );
     $respond_array['code'] = 200;
     $respond_array['row'] = $data;

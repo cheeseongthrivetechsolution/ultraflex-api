@@ -6,7 +6,6 @@
     // Post Properties
     public $user_id;
     public $department_id;
-    public $position_id;
     public $role_id;
     public $username;
     public $password;
@@ -16,7 +15,6 @@
     public $dob;
     public $gender;
     public $avatar;
-    public $sound;
     public $phone;
     public $remark;
     public $status;
@@ -50,7 +48,6 @@
         if ($row) {
           $this->user_id = $row['user_id'];
           $this->department_id = $row['department_id'];
-          $this->position_id = $row['position_id'];
           $this->role_id = $row['role_id'];
           $this->username = $row['username'];
           $this->password = $row['password'];
@@ -60,7 +57,6 @@
           $this->dob = $row['dob'];
           $this->gender = $row['gender'];
           $this->avatar = $row['avatar'];
-          $this->sound = $row['sound'];
           $this->phone = $row['phone'];
           $this->remark = $row['remark'];
           $this->status = $row['status'];
@@ -91,7 +87,6 @@
         if ($row) {
           $this->user_id = $row['user_id'];
           $this->department_id = $row['department_id'];
-          $this->position_id = $row['position_id'];
           $this->role_id = $row['role_id'];
           $this->username = $row['username'];
           $this->password = $row['password'];
@@ -101,7 +96,6 @@
           $this->dob = $row['dob'];
           $this->gender = $row['gender'];
           $this->avatar = $row['avatar'];
-          $this->sound = $row['sound'];
           $this->phone = $row['phone'];
           $this->remark = $row['remark'];
           $this->status = $row['status'];
@@ -254,22 +248,22 @@
     }
 
     //Failed Login Attempt
-    public function soundSwitch() {
-        // Create query
-        $query = 'UPDATE ' . $this->table . '
-                    SET sound = :sound
-                    WHERE user_id = :user_id';
-        // Prepare statement
-        $stmt = $this->conn->prepare($query);
-        // Bind data
-        $stmt->bindParam(':sound', $this->sound);
-        $stmt->bindParam(':user_id', $this->user_id);
-        // Execute query
-        if($stmt->execute()) {
-            return true;
-        }
-        return false;
-    }
+    // public function soundSwitch() {
+    //     // Create query
+    //     $query = 'UPDATE ' . $this->table . '
+    //                 SET sound = :sound
+    //                 WHERE user_id = :user_id';
+    //     // Prepare statement
+    //     $stmt = $this->conn->prepare($query);
+    //     // Bind data
+    //     $stmt->bindParam(':sound', $this->sound);
+    //     $stmt->bindParam(':user_id', $this->user_id);
+    //     // Execute query
+    //     if($stmt->execute()) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     //Generate Salt for hashing
     public function generateSalt() {

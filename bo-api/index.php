@@ -1,3 +1,5 @@
 <?php
   //Connecting to Redis server on localhost
-  echo phpinfo();
+
+
+  echo $_SERVER['HTTP_HOST'];

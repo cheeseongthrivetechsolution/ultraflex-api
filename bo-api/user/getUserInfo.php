@@ -64,7 +64,6 @@
       'username' => $user->username,
       'name' => $user->name,
       'department' => $department->getDepartmentName($user->department_id),
-      'position' => $position->getPositionName($user->position_id),
       'role' => $role->getRoleName($user->role_id),
       'email' => $user->email,
       'dob' => $user->dob,
